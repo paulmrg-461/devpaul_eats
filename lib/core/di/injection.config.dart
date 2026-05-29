@@ -147,6 +147,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i280.ClearCartUseCase>(
       () => _i280.ClearCartUseCase(gh<_i580.CartRepository>()),
     );
+    gh.factory<_i299.MenuManagerCubit>(
+      () => _i299.MenuManagerCubit(
+        gh<_i882.GetMenuItemsUseCase>(),
+        gh<_i635.MenuRemoteDataSource>(),
+      ),
+    );
     gh.lazySingleton<_i646.AuthRepository>(
       () => _i402.AuthRepositoryImpl(gh<_i874.AuthRemoteDataSource>()),
     );
@@ -163,12 +169,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i1003.VendorRepository>(
       () => _i720.VendorRepositoryImpl(gh<_i175.VendorRemoteDataSource>()),
-    );
-    gh.factory<_i299.MenuManagerCubit>(
-      () => _i299.MenuManagerCubit(
-        gh<_i882.GetMenuItemsUseCase>(),
-        gh<_i635.MenuRemoteDataSourceImpl>(),
-      ),
     );
     gh.lazySingleton<_i359.GetVendorsUseCase>(
       () => _i359.GetVendorsUseCase(gh<_i1003.VendorRepository>()),

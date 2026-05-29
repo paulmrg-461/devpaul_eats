@@ -1,4 +1,5 @@
 import 'package:devpaul_eats/core/theme/app_colors.dart';
+import 'package:devpaul_eats/features/auth/domain/entities/app_user.dart';
 import 'package:devpaul_eats/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:devpaul_eats/features/auth/presentation/cubit/auth_state.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,9 @@ class _SplashPageState extends State<SplashPage> {
         state.when(
           initial: () {},
           loading: () {},
-          authenticated: (_) => context.go('/home/vendors'),
+          authenticated: (user) => context.go(
+            user.role == UserRole.vendor ? '/vendor-panel' : '/home/vendors',
+          ),
           unauthenticated: () => context.go('/login'),
           error: (_) => context.go('/login'),
         );

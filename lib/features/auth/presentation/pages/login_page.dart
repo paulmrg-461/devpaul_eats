@@ -1,5 +1,6 @@
 import 'package:devpaul_eats/core/theme/app_colors.dart';
 import 'package:devpaul_eats/core/theme/app_text_styles.dart';
+import 'package:devpaul_eats/features/auth/domain/entities/app_user.dart';
 import 'package:devpaul_eats/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:devpaul_eats/features/auth/presentation/cubit/auth_state.dart';
 import 'package:devpaul_eats/features/auth/presentation/widgets/auth_text_field.dart';
@@ -44,7 +45,9 @@ class _LoginPageState extends State<LoginPage> {
         state.when(
           initial: () {},
           loading: () {},
-          authenticated: (_) => context.go('/home/vendors'),
+          authenticated: (user) => context.go(
+            user.role == UserRole.vendor ? '/vendor-panel' : '/home/vendors',
+          ),
           unauthenticated: () {},
           error: (message) {
             ScaffoldMessenger.of(context).showSnackBar(

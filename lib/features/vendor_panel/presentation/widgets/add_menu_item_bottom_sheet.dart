@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:devpaul_eats/core/services/storage_service.dart';
 import 'package:devpaul_eats/features/menu/data/datasources/menu_remote_datasource.dart';
@@ -32,7 +32,7 @@ class _AddMenuItemBottomSheetState extends State<AddMenuItemBottomSheet> {
 
   String _selectedCategory = 'General';
   bool _isAvailable = true;
-  File? _pickedImage;
+  Uint8List? _pickedBytes;
   bool _loading = false;
 
   static const _categories = [
@@ -74,7 +74,8 @@ class _AddMenuItemBottomSheetState extends State<AddMenuItemBottomSheet> {
         imageQuality: 80,
       );
       if (result != null) {
-        setState(() => _pickedImage = File(result.path));
+        final bytes = await result.readAsBytes();
+        setState(() => _pickedBytes = bytes);
       }
     } catch (e) {
       if (mounted) {
@@ -89,15 +90,15 @@ class _AddMenuItemBottomSheetState extends State<AddMenuItemBottomSheet> {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _loading = true);
 
-    final dataSource = GetIt.instance<MenuRemoteDataSourceImpl>();
+    final dataSource = GetIt.instance<MenuRemoteDataSource>();
     final cubit = context.read<MenuManagerCubit>();
 
     try {
       String? uploadedPhotoUrl;
-      if (_pickedImage != null) {
+      if (_pickedBytes != null) {
         final ts = DateTime.now().millisecondsSinceEpoch;
         uploadedPhotoUrl = await GetIt.instance<StorageService>().uploadImage(
-          file: _pickedImage!,
+          bytes: _pickedBytes!,
           path: 'menu_items/${widget.vendorId}/$ts.jpg',
         );
       }
@@ -184,10 +185,10 @@ class _AddMenuItemBottomSheetState extends State<AddMenuItemBottomSheet> {
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: const Color(0xFFFF6B35).withValues(alpha: 0.3)),
                   ),
-                  child: _pickedImage != null
+                  child: _pickedBytes != null
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          child: Image.file(_pickedImage!, fit: BoxFit.cover),
+                          child: Image.memory(_pickedBytes!, fit: BoxFit.cover),
                         )
                       : const Column(
                           mainAxisAlignment: MainAxisAlignment.center,

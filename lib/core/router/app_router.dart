@@ -15,6 +15,7 @@ import 'package:devpaul_eats/features/vendor_panel/presentation/cubit/menu_manag
 import 'package:devpaul_eats/features/vendor_panel/presentation/cubit/vendor_panel_cubit.dart';
 import 'package:devpaul_eats/features/vendor_panel/presentation/pages/menu_manager_page.dart';
 import 'package:devpaul_eats/features/vendor_panel/presentation/pages/vendor_panel_page.dart';
+import 'package:devpaul_eats/features/vendor_panel/presentation/pages/vendor_setup_page.dart';
 import 'package:devpaul_eats/features/vendors/presentation/pages/vendor_detail_page.dart';
 import 'package:devpaul_eats/features/vendors/presentation/pages/vendors_page.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,7 @@ abstract final class AppRoutes {
   static const String checkout = 'checkout';
   static const String orderSuccess = 'order-success';
   static const String vendorPanel = 'vendor-panel';
+  static const String vendorSetup = 'vendor-setup';
   static const String menuManager = 'menu-manager';
 }
 
@@ -205,6 +207,16 @@ abstract final class AppRouter {
           final order = state.extra as Order;
           return OrderSuccessPage(order: order);
         },
+      ),
+
+      // Vendor setup (first-time store creation)
+      GoRoute(
+        path: '/vendor-setup',
+        name: AppRoutes.vendorSetup,
+        builder: (context, state) => BlocProvider<AuthCubit>(
+          create: (_) => GetIt.instance<AuthCubit>()..checkAuthStatus(),
+          child: const VendorSetupPage(),
+        ),
       ),
 
       // Vendor panel

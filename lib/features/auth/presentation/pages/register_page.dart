@@ -50,7 +50,9 @@ class _RegisterPageState extends State<RegisterPage> {
         state.when(
           initial: () {},
           loading: () {},
-          authenticated: (_) => context.go('/home/vendors'),
+          authenticated: (user) => context.go(
+            user.role == UserRole.vendor ? '/vendor-panel' : '/home/vendors',
+          ),
           unauthenticated: () {},
           error: (message) {
             ScaffoldMessenger.of(context).showSnackBar(

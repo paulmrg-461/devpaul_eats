@@ -1,8 +1,8 @@
 import 'package:devpaul_eats/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:devpaul_eats/features/auth/presentation/cubit/auth_state.dart';
 import 'package:devpaul_eats/features/orders/domain/entities/order.dart';
 import 'package:devpaul_eats/features/vendor_panel/presentation/cubit/vendor_panel_cubit.dart';
 import 'package:devpaul_eats/features/vendor_panel/presentation/cubit/vendor_panel_state.dart';
-import 'package:devpaul_eats/features/vendor_panel/presentation/pages/vendor_setup_page.dart';
 import 'package:devpaul_eats/features/vendor_panel/presentation/widgets/order_panel_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,27 +19,34 @@ class _VendorPanelPageState extends State<VendorPanelPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _initPanel());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _tryLoadPanel());
   }
 
-  void _initPanel() {
+  void _tryLoadPanel() {
     final authState = context.read<AuthCubit>().state;
     authState.maybeWhen(
-      authenticated: (user) {
-        context.read<VendorPanelCubit>().loadPanel(user.id);
-      },
+      authenticated: (user) =>
+          context.read<VendorPanelCubit>().loadPanel(user.id),
       orElse: () {},
     );
   }
 
+  void _initPanel() => _tryLoadPanel();
+
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<VendorPanelCubit, VendorPanelState>(
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, authState) {
+        authState.maybeWhen(
+          authenticated: (user) =>
+              context.read<VendorPanelCubit>().loadPanel(user.id),
+          orElse: () {},
+        );
+      },
+      child: BlocConsumer<VendorPanelCubit, VendorPanelState>(
       listener: (context, state) {
         if (state is VendorPanelError && state.message == 'no_vendor') {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const VendorSetupPage()),
-          );
+          context.go('/vendor-setup');
         }
       },
       builder: (context, state) {
@@ -150,6 +157,7 @@ class _VendorPanelPageState extends State<VendorPanelPage> {
             ),
         };
       },
+    ),
     );
   }
 

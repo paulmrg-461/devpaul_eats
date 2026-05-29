@@ -9,7 +9,7 @@ import 'package:injectable/injectable.dart';
 @injectable
 class MenuManagerCubit extends Cubit<MenuManagerState> {
   final GetMenuItemsUseCase _getMenuItemsUseCase;
-  final MenuRemoteDataSourceImpl _menuDataSource;
+  final MenuRemoteDataSource _menuDataSource;
 
   MenuManagerCubit(
     this._getMenuItemsUseCase,

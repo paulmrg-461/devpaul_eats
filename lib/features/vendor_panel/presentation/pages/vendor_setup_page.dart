@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:devpaul_eats/core/services/storage_service.dart';
 import 'package:devpaul_eats/features/auth/presentation/cubit/auth_cubit.dart';
@@ -22,7 +22,7 @@ class _VendorSetupPageState extends State<VendorSetupPage> {
   final _storeNameCtrl = TextEditingController();
   final _descCtrl = TextEditingController();
   VendorCategory _selectedCategory = VendorCategory.other;
-  File? _coverPhoto;
+  Uint8List? _pickedBytes;
   bool _loading = false;
 
   @override
@@ -39,7 +39,8 @@ class _VendorSetupPageState extends State<VendorSetupPage> {
         imageQuality: 80,
       );
       if (result != null) {
-        setState(() => _coverPhoto = File(result.path));
+        final bytes = await result.readAsBytes();
+        setState(() => _pickedBytes = bytes);
       }
     } catch (e) {
       if (mounted) {
@@ -70,10 +71,10 @@ class _VendorSetupPageState extends State<VendorSetupPage> {
 
     try {
       String? coverPhotoUrl;
-      if (_coverPhoto != null) {
+      if (_pickedBytes != null) {
         final ts = DateTime.now().millisecondsSinceEpoch;
         coverPhotoUrl = await GetIt.instance<StorageService>().uploadImage(
-          file: _coverPhoto!,
+          bytes: _pickedBytes!,
           path: 'vendors/$userId/cover_$ts.jpg',
         );
       }
@@ -168,10 +169,10 @@ class _VendorSetupPageState extends State<VendorSetupPage> {
                       color: const Color(0xFFFF6B35).withValues(alpha: 0.3),
                     ),
                   ),
-                  child: _coverPhoto != null
+                  child: _pickedBytes != null
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(16),
-                          child: Image.file(_coverPhoto!, fit: BoxFit.cover),
+                          child: Image.memory(_pickedBytes!, fit: BoxFit.cover),
                         )
                       : const Column(
                           mainAxisAlignment: MainAxisAlignment.center,

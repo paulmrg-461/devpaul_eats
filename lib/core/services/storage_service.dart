@@ -1,11 +1,10 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class StorageService {
-  /// Uploads [file] to [path] in Firebase Storage and returns its download URL.
-  Future<String> uploadImage({required File file, required String path});
+  Future<String> uploadImage({required Uint8List bytes, required String path});
 }
 
 @LazySingleton(as: StorageService)
@@ -16,11 +15,14 @@ class StorageServiceImpl implements StorageService {
 
   @override
   Future<String> uploadImage({
-    required File file,
+    required Uint8List bytes,
     required String path,
   }) async {
     final ref = _storage.ref().child(path);
-    final snapshot = await ref.putFile(file);
+    final snapshot = await ref.putData(
+      bytes,
+      SettableMetadata(contentType: 'image/jpeg'),
+    );
     return snapshot.ref.getDownloadURL();
   }
 }
