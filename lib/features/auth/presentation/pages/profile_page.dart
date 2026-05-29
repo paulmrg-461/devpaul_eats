@@ -109,13 +109,13 @@ class _ProfileBody extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               decoration: BoxDecoration(
                 color: isVendor
-                    ? const Color(0xFFFF6B35).withOpacity(0.12)
-                    : const Color(0xFF1565C0).withOpacity(0.10),
+                    ? const Color(0xFFFF6B35).withValues(alpha: 0.12)
+                    : const Color(0xFF1565C0).withValues(alpha: 0.10),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: isVendor
-                      ? const Color(0xFFFF6B35).withOpacity(0.4)
-                      : const Color(0xFF1565C0).withOpacity(0.3),
+                      ? const Color(0xFFFF6B35).withValues(alpha: 0.4)
+                      : const Color(0xFF1565C0).withValues(alpha: 0.3),
                 ),
               ),
               child: Text(

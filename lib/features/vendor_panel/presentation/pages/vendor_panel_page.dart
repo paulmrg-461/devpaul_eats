@@ -182,7 +182,7 @@ class _VendorPanelPageState extends State<VendorPanelPage> {
             ),
             Switch(
               value: isOpen,
-              activeColor: const Color(0xFF4CAF50),
+              activeThumbColor: const Color(0xFF4CAF50),
               inactiveThumbColor: const Color(0xFFD62828),
               onChanged: (_) =>
                   context.read<VendorPanelCubit>().toggleStoreOpen(),
@@ -264,7 +264,7 @@ class _StatCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

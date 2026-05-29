@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:devpaul_eats/core/services/storage_service.dart';
 import 'package:devpaul_eats/features/menu/data/datasources/menu_remote_datasource.dart';
 import 'package:devpaul_eats/features/menu/data/models/menu_item_model.dart';
 import 'package:devpaul_eats/features/menu/domain/entities/menu_item.dart';
@@ -8,9 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
-
-// TODO(T10): Upload picked image to Firebase Storage and store the URL.
-// Currently only the local File path is kept in memory; photoUrl stays null.
 
 class AddMenuItemBottomSheet extends StatefulWidget {
   final String vendorId;
@@ -95,8 +93,14 @@ class _AddMenuItemBottomSheetState extends State<AddMenuItemBottomSheet> {
     final cubit = context.read<MenuManagerCubit>();
 
     try {
-      // TODO(T10): Upload _pickedImage to Firebase Storage here and get URL.
-      const String? uploadedPhotoUrl = null;
+      String? uploadedPhotoUrl;
+      if (_pickedImage != null) {
+        final ts = DateTime.now().millisecondsSinceEpoch;
+        uploadedPhotoUrl = await GetIt.instance<StorageService>().uploadImage(
+          file: _pickedImage!,
+          path: 'menu_items/${widget.vendorId}/$ts.jpg',
+        );
+      }
 
       final model = MenuItemModel(
         id: widget.existingItem?.id ?? '',
@@ -178,7 +182,7 @@ class _AddMenuItemBottomSheetState extends State<AddMenuItemBottomSheet> {
                   decoration: BoxDecoration(
                     color: const Color(0xFFFFF8F0),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: const Color(0xFFFF6B35).withOpacity(0.3)),
+                    border: Border.all(color: const Color(0xFFFF6B35).withValues(alpha: 0.3)),
                   ),
                   child: _pickedImage != null
                       ? ClipRRect(
@@ -240,7 +244,7 @@ class _AddMenuItemBottomSheetState extends State<AddMenuItemBottomSheet> {
 
               // Category dropdown
               DropdownButtonFormField<String>(
-                value: _selectedCategory,
+                initialValue: _selectedCategory,
                 decoration: InputDecoration(
                   labelText: 'Categoría',
                   border: OutlineInputBorder(
@@ -272,7 +276,7 @@ class _AddMenuItemBottomSheetState extends State<AddMenuItemBottomSheet> {
                   ),
                   Switch(
                     value: _isAvailable,
-                    activeColor: const Color(0xFF4CAF50),
+                    activeThumbColor: const Color(0xFF4CAF50),
                     onChanged: (v) => setState(() => _isAvailable = v),
                   ),
                 ],

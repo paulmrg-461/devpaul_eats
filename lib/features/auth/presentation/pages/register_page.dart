@@ -6,6 +6,7 @@ import 'package:devpaul_eats/features/auth/presentation/cubit/auth_state.dart';
 import 'package:devpaul_eats/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -85,8 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: [
                   Text(
                     'Crear cuenta',
-                    style: TextStyle(
-                      fontFamily: 'Playfair',
+                    style: GoogleFonts.playfairDisplay(
                       fontSize: 28,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary,
@@ -206,7 +206,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           backgroundColor: AppColors.primary,
                           foregroundColor: Colors.white,
                           disabledBackgroundColor:
-                              AppColors.primary.withOpacity(0.6),
+                              AppColors.primary.withValues(alpha: 0.6),
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius:
@@ -287,7 +287,7 @@ class _RoleCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.primary.withOpacity(0.08)
+              ? AppColors.primary.withValues(alpha: 0.08)
               : AppColors.surface,
           borderRadius: BorderRadius.circular(AppColors.radiusS),
           border: Border.all(
@@ -317,7 +317,7 @@ class _RoleCard extends StatelessWidget {
               subtitle,
               style: AppTextStyles.caption.copyWith(
                 color: isSelected
-                    ? AppColors.primary.withOpacity(0.8)
+                    ? AppColors.primary.withValues(alpha: 0.8)
                     : AppColors.textSecondary,
               ),
               textAlign: TextAlign.center,

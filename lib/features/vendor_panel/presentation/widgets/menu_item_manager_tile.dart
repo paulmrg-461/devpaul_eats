@@ -44,8 +44,8 @@ class MenuItemManagerTile extends StatelessWidget {
               width: 50,
               height: 50,
               fit: BoxFit.cover,
-              placeholder: (_, __) => const _PlaceholderBox(),
-              errorWidget: (_, __, ___) => const _PlaceholderBox(),
+              placeholder: (_, _) => const _PlaceholderBox(),
+              errorWidget: (_, _, _) => const _PlaceholderBox(),
             )
           : const _PlaceholderBox(),
     );
@@ -89,7 +89,7 @@ class MenuItemManagerTile extends StatelessWidget {
       children: [
         Switch(
           value: item.isAvailable,
-          activeColor: const Color(0xFF4CAF50),
+          activeThumbColor: const Color(0xFF4CAF50),
           onChanged: (_) {
             context.read<MenuManagerCubit>().toggleItemAvailability(item);
           },

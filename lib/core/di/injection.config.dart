@@ -10,6 +10,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:cloud_firestore/cloud_firestore.dart' as _i974;
+import 'package:devpaul_eats/core/services/storage_service.dart' as _i1003;
 import 'package:devpaul_eats/features/auth/data/datasources/auth_remote_datasource.dart'
     as _i874;
 import 'package:devpaul_eats/features/auth/data/repositories/auth_repository_impl.dart'
@@ -89,6 +90,7 @@ import 'package:devpaul_eats/features/vendors/presentation/cubit/vendor_detail_c
 import 'package:devpaul_eats/features/vendors/presentation/cubit/vendor_list_cubit.dart'
     as _i404;
 import 'package:firebase_auth/firebase_auth.dart' as _i59;
+import 'package:firebase_storage/firebase_storage.dart' as _i457;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
@@ -100,6 +102,9 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     gh.factory<_i368.ItemCustomizerCubit>(() => _i368.ItemCustomizerCubit());
+    gh.lazySingleton<_i1003.StorageService>(
+      () => _i1003.StorageServiceImpl(gh<_i457.FirebaseStorage>()),
+    );
     gh.lazySingleton<_i909.OrderRemoteDataSource>(
       () => _i909.OrderRemoteDataSourceImpl(gh<_i974.FirebaseFirestore>()),
     );

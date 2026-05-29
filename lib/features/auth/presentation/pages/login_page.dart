@@ -5,6 +5,7 @@ import 'package:devpaul_eats/features/auth/presentation/cubit/auth_state.dart';
 import 'package:devpaul_eats/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
@@ -128,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                                 backgroundColor: AppColors.primary,
                                 foregroundColor: Colors.white,
                                 disabledBackgroundColor:
-                                    AppColors.primary.withOpacity(0.6),
+                                    AppColors.primary.withValues(alpha: 0.6),
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 16,
                                 ),
@@ -215,8 +216,7 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(height: 24),
           Text(
             'Bienvenido',
-            style: TextStyle(
-              fontFamily: 'Playfair',
+            style: GoogleFonts.playfairDisplay(
               fontSize: 32,
               fontWeight: FontWeight.w700,
               color: AppColors.textPrimary,

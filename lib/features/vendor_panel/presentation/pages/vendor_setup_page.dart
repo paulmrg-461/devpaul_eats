@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:devpaul_eats/core/services/storage_service.dart';
 import 'package:devpaul_eats/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:devpaul_eats/features/vendors/domain/entities/vendor.dart';
 import 'package:devpaul_eats/features/vendors/domain/repositories/vendor_repository.dart';
@@ -8,8 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-
-// TODO(T10): Upload cover photo to Firebase Storage and store URL before createVendor.
 
 class VendorSetupPage extends StatefulWidget {
   const VendorSetupPage({super.key});
@@ -70,8 +69,14 @@ class _VendorSetupPageState extends State<VendorSetupPage> {
     setState(() => _loading = true);
 
     try {
-      // TODO(T10): Upload _coverPhoto to Firebase Storage and get URL.
-      const String? coverPhotoUrl = null;
+      String? coverPhotoUrl;
+      if (_coverPhoto != null) {
+        final ts = DateTime.now().millisecondsSinceEpoch;
+        coverPhotoUrl = await GetIt.instance<StorageService>().uploadImage(
+          file: _coverPhoto!,
+          path: 'vendors/$userId/cover_$ts.jpg',
+        );
+      }
 
       final vendor = Vendor(
         id: '',
@@ -160,7 +165,7 @@ class _VendorSetupPageState extends State<VendorSetupPage> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: const Color(0xFFFF6B35).withOpacity(0.3),
+                      color: const Color(0xFFFF6B35).withValues(alpha: 0.3),
                     ),
                   ),
                   child: _coverPhoto != null
@@ -214,7 +219,7 @@ class _VendorSetupPageState extends State<VendorSetupPage> {
 
               // Category dropdown
               DropdownButtonFormField<VendorCategory>(
-                value: _selectedCategory,
+                initialValue: _selectedCategory,
                 decoration: InputDecoration(
                   labelText: 'Categoría',
                   border: OutlineInputBorder(

@@ -3,6 +3,7 @@ import 'package:devpaul_eats/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:devpaul_eats/features/auth/presentation/cubit/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -59,8 +60,7 @@ class _SplashPageState extends State<SplashPage> {
               const SizedBox(height: 24),
               Text(
                 'DevPaul Eats',
-                style: TextStyle(
-                  fontFamily: 'Playfair',
+                style: GoogleFonts.playfairDisplay(
                   fontSize: 36,
                   fontWeight: FontWeight.w700,
                   color: AppColors.primary,
@@ -73,8 +73,7 @@ class _SplashPageState extends State<SplashPage> {
               const SizedBox(height: 8),
               Text(
                 'Sabor en cada entrega',
-                style: TextStyle(
-                  fontFamily: 'Playfair',
+                style: GoogleFonts.playfairDisplay(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                   color: AppColors.textSecondary,

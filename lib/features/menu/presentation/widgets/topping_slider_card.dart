@@ -42,14 +42,14 @@ class ToppingSliderCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppColors.radiusM),
         border: Border.all(
           color: _isActive
-              ? AppColors.primary.withOpacity(0.6)
+              ? AppColors.primary.withValues(alpha: 0.6)
               : AppColors.divider,
           width: _isActive ? 1.5 : 1.0,
         ),
         boxShadow: [
           BoxShadow(
             color: _isActive
-                ? AppColors.primary.withOpacity(0.08)
+                ? AppColors.primary.withValues(alpha: 0.08)
                 : AppColors.shadow,
             blurRadius: _isActive ? 8 : 4,
             offset: const Offset(0, 2),
@@ -193,9 +193,9 @@ class _SliderRow extends StatelessWidget {
           child: SliderTheme(
             data: SliderTheme.of(context).copyWith(
               activeTrackColor: AppColors.primary,
-              inactiveTrackColor: AppColors.primary.withOpacity(0.15),
+              inactiveTrackColor: AppColors.primary.withValues(alpha: 0.15),
               thumbColor: AppColors.primary,
-              overlayColor: AppColors.primary.withOpacity(0.12),
+              overlayColor: AppColors.primary.withValues(alpha: 0.12),
               thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10),
               overlayShape: const RoundSliderOverlayShape(overlayRadius: 20),
             ),
@@ -236,7 +236,7 @@ class _CircleButton extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: isEnabled
-              ? AppColors.primary.withOpacity(0.12)
+              ? AppColors.primary.withValues(alpha: 0.12)
               : AppColors.divider,
         ),
         child: Icon(

@@ -1,8 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:devpaul_eats/features/menu/domain/entities/menu_item.dart';
 import 'package:devpaul_eats/features/menu/domain/usecases/get_menu_items_usecase.dart';
-import 'package:devpaul_eats/features/vendors/domain/entities/vendor.dart';
 import 'package:devpaul_eats/features/vendors/domain/usecases/get_vendor_by_id_usecase.dart';
 import 'package:devpaul_eats/features/vendors/presentation/cubit/vendor_detail_state.dart';
 

@@ -1,0 +1,71 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---- Helpers ----
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // True if the signed-in user owns the vendor document `vendorId`.
+    function isVendorOwner(vendorId) {
+      return isSignedIn()
+        && get(/databases/$(database)/documents/vendors/$(vendorId)).data.userId
+           == request.auth.uid;
+    }
+
+    // ---- Users ----
+    match /users/{userId} {
+      allow read, create, update, delete: if isOwner(userId);
+    }
+
+    // ---- Vendors (marketplace) ----
+    match /vendors/{vendorId} {
+      // Any signed-in user can browse the marketplace.
+      allow read: if isSignedIn();
+      // Vendor record must belong to its creator.
+      allow create: if isSignedIn()
+        && request.resource.data.userId == request.auth.uid;
+      // Only the owner can mutate their own store.
+      allow update, delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid;
+
+      // Menu items live under the owning vendor.
+      match /menu_items/{itemId} {
+        allow read: if isSignedIn();
+        allow write: if isVendorOwner(vendorId);
+
+        // Toppings live under their menu item.
+        match /toppings/{toppingId} {
+          allow read: if isSignedIn();
+          allow write: if isVendorOwner(vendorId);
+        }
+      }
+    }
+
+    // ---- Carts (one doc per user, keyed by uid) ----
+    match /carts/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // ---- Orders ----
+    match /orders/{orderId} {
+      // Visible to the buying client and to the selling vendor's owner.
+      allow read: if isSignedIn()
+        && (resource.data.clientId == request.auth.uid
+            || isVendorOwner(resource.data.vendorId));
+      // A client may only create orders for themselves.
+      allow create: if isSignedIn()
+        && request.resource.data.clientId == request.auth.uid;
+      // Only the vendor owner can advance order status.
+      allow update: if isVendorOwner(resource.data.vendorId);
+      // Orders are immutable history; no deletes from clients.
+      allow delete: if false;
+    }
+  }
+}

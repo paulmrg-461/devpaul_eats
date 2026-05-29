@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:devpaul_eats/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:devpaul_eats/features/auth/presentation/cubit/auth_state.dart';
 import 'package:devpaul_eats/features/cart/domain/entities/cart.dart';
 import 'package:devpaul_eats/features/cart/domain/entities/cart_item.dart';
 import 'package:devpaul_eats/features/cart/presentation/cubit/cart_cubit.dart';

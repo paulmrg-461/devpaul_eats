@@ -117,7 +117,7 @@ class _CategoryChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.12),
+        color: AppColors.primary.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
@@ -159,8 +159,8 @@ class _OpenBadge extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
         color: isOpen
-            ? const Color(0xFF2E7D32).withOpacity(0.12)
-            : AppColors.error.withOpacity(0.12),
+            ? const Color(0xFF2E7D32).withValues(alpha: 0.12)
+            : AppColors.error.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
